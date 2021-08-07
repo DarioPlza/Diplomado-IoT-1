@@ -1,0 +1,75 @@
+/*
+	Ejercicio muestra en C
+	Creador por: Darío Peñaloza
+	Fecha: 07 de Agosto 2021
+	
+	El programa reacciona a las teclas 'a', 'd' y 't'.
+	Muestra un '*' que se va moviendo de posición en 
+	función de la tecla que se presione ('a' o 'd').
+	El programa termina si se presiona la tecla 't'
+	 
+*/
+
+//importar librerias
+#include "conio.h"
+#include "stdio.h"
+#include "stdlib.h"
+
+#define DIM_M 20	// Tamaño del mundo 
+
+//Creación del mundo
+int generar_mundo(char m[], int dim_m){
+	int i;
+	for(i=0; i<dim_m; i++)
+		m[i]='-';
+	int pos=rand()%dim_m;	//Posiciona al '*' en un lugar aleatorio
+	m[pos]='*';
+	return pos;
+}
+
+//Imprime al mundo en pantalla
+void imprimir_mundo(char m[], int dim_m){
+	int i;
+	for(i=0; i<dim_m; i++)
+		printf("%c", m[i]); 
+	printf("\n");
+}
+
+//Cambia la posición del '*' un lugar a la izquiera
+void mover_izq(char m[], int &pos, int dim_m){
+	m[pos]='-';
+	if(pos>0)pos--;
+	else pos=dim_m-1;
+	m[pos]='*';
+}
+
+//Cambia la posición del '*' un lugar a la derecha
+void mover_der(char m[],int &pos, int dim_m){
+	m[pos]='-';
+	if(pos<dim_m-1)pos++;
+	else pos=0;
+	m[pos]='*';
+}
+
+int main(){
+	//Definición del mundo
+	char mundo[DIM_M];	
+	int pa= generar_mundo(mundo,DIM_M);
+	char control;	// Variable que recibe las teclas oprimidas
+	
+	printf("Oprima 'a' para mover izq, 'd' para mover der.\n");
+	printf("Oprima 't' para terminar\n");
+
+	imprimir_mundo(mundo,DIM_M);	//Creación del mundo
+	do{	//Inicio ciclo que captura las teclas ingresadas
+	control=getch();	//Recibe una tecla
+	if (control=='a')
+		mover_izq(mundo, pa, DIM_M);	//Si se recibe 'a' mueve izq
+	if (control=='d')
+		mover_der(mundo, pa, DIM_M);	//Si se recibe 'd' mueve der
+	imprimir_mundo(mundo,DIM_M);	//Imprime el mundo con la pos nueva
+	}while(control != 't'); //Cierra ciclo cuando recibe 't'
+	
+	getch();
+	return 0;
+}
